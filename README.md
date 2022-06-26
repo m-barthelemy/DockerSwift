@@ -163,11 +163,13 @@ Enter `https://github.com/m-barthelemy/docker-client-swift.git` for the URL.
 Local socket (defaults to `/var/run/docker.sock`):
 ```swift
 let docker = DockerClient()
+defer {try! docker.syncShutdown()}
 ```
 
 Remote daemon over HTTP:
 ```swift
 let docker = DockerClient(deamonURL: .init(string: "http://127.0.0.1:2375")!)
+defer {try! docker.syncShutdown()}
 ```
 
 Remote daemon over HTTPS, using a client certificate for authentication:
@@ -182,6 +184,7 @@ let docker = DockerClient(
     deamonURL: .init(string: "https://your.docker.daemon:2376")!,
     tlsConfig: tlsConfig
 )
+defer {try! docker.syncShutdown()}
 ```
 
 ### Docker system info
