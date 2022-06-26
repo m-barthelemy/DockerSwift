@@ -30,6 +30,9 @@ extension HTTPClient {
         }
     }
     
+    /// Takes care of "pre-parsing" the output of some Docker endpoints returning a stream of data.
+    /// Of course these are very inconsistent: sometimes these items have a length prefix, sometimes that are just test separated by newlines, other times they are JSON
+    ///  objects separated by newlines.
     internal func executeStream(_ method: HTTPMethod = .GET, daemonURL: URL, urlPath: String, body: HTTPClientRequest.Body? = nil, timeout: TimeAmount, logger: Logger, headers: HTTPHeaders, hasLengthHeader: Bool = false, separators: [UInt8]) async throws -> AsyncThrowingStream<ByteBuffer, Error> {
         
         guard let url = URL(string: daemonURL.absoluteString.trimmingCharacters(in: .init(charactersIn: "/")) + urlPath) else {
