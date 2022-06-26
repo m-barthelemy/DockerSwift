@@ -8,7 +8,7 @@ struct CommitContainerEndpoint: Endpoint {
     
     var path: String {
         """
-        images/commit\
+        commit\
         ?container=\(nameOrId)\
         \(repo != nil    ? "&repo=\(repo!)" : "")\
         \(tag != nil     ? "&tag=\(tag!)" : "")\
@@ -35,6 +35,5 @@ struct CommitContainerEndpoint: Endpoint {
     
     struct CommitContainerResponse: Codable {
         let Id: String
-        let Warnings: [String]
     }
 }

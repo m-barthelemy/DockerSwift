@@ -314,4 +314,14 @@ final class ContainerTests: XCTestCase {
         }
         try await client.containers.remove(container.id, force: true)
     }
+    
+    func testWaitContainer() async throws {
+        let container = try await client.containers.create(
+            spec: .init(config: .init(image: "hello-world:latest"))
+        )
+        
+        try await client.containers.start(container.id)
+        let statusCode = try await client.containers.wait(container.id)
+        XCTAssert(statusCode == 0, "Ensure container exited properly")
+    }
 }

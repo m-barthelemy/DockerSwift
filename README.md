@@ -38,7 +38,7 @@ This means that it will work with Docker >= 20.10.
 |                             | Get processes (top)     | ✅       |             |
 |                             | Delete                  | ✅       |             |
 |                             | Prune                   | ✅       |             |
-|                             | Wait                    | ✅       | untested    |
+|                             | Wait                    | ✅       |             |
 |                             | Filesystem changes      | ✅       | untested    |
 |                             | Attach                  | ✅       | basic support <sup>1</sup>|
 |                             | Exec                    | ❌       | unlikely <sup>2</sup>|
@@ -50,7 +50,7 @@ This means that it will work with Docker >= 20.10.
 |                             | Build                   | ✅       | basic support |
 |                             | Tag                     | ✅       |             |
 |                             | Push                    | ✅       |             |
-|                             | Create (container commit)| ✅       | untested    |
+|                             | Create (container commit)| ✅       |             |
 |                             | Delete                  | ✅       |             |
 |                             | Prune                   | ✅       |             |
 |                             |                         |          |             |

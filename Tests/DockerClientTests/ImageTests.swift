@@ -7,8 +7,11 @@ final class ImageTests: XCTestCase {
     
     var client: DockerClient!
     
-    override func setUp() {
+    override func setUp() async throws {
         client = DockerClient.testable()
+        if (try? await client.images.get("nginx:latest")) == nil {
+            _ = try await client.images.pull(byName: "nginx", tag: "latest")
+        }
     }
     
     override func tearDownWithError() throws {
@@ -16,14 +19,13 @@ final class ImageTests: XCTestCase {
     }
     
     func testDeleteImage() async throws {
-        let image = try await client.images.pull(byName: "hello-world", tag: "latest")
-        try await client.images.remove(image.id, force: true)
+        try await client.images.remove("nginx:latest", force: true)
     }
     
     func testPullImage() async throws {
-        let image = try await client.images.pull(byName: "hello-world", tag: "latest")
+        let image = try await client.images.pull(byName: "nginx", tag: "latest")
         
-        XCTAssertTrue(image.repoTags!.first == "hello-world:latest")
+        XCTAssertTrue(image.repoTags!.first == "nginx:latest")
     }
     
     func testPushImage() async throws {
@@ -34,15 +36,13 @@ final class ImageTests: XCTestCase {
         try await client.registries.login(credentials: &credentials)
         
         let tag = UUID().uuidString
-        let image = try await client.images.pull(byName: "hello-world", tag: "latest")
+        let image = try await client.images.get("nginx:latest")
         try await client.images.tag(image.id, repoName: "mbarthelemy/tests", tag: tag)
         
         try await client.images.push("mbarthelemy/tests", tag: tag, credentials: credentials)
     }
     
     func testListImage() async throws {
-        let _ = try await client.images.pull(byName: "hello-world", tag: "latest")
-        
         let images = try await client.images.list()
         
         XCTAssert(images.count >= 1)
@@ -80,13 +80,13 @@ final class ImageTests: XCTestCase {
     }
     
     func testImageHistory() async throws {
-        let image = try await client.images.pull(byName: "nginx", tag: "1.18-alpine")
+        let image = try await client.images.get("nginx:latest")
         let history = try await client.images.history(image.id)
         XCTAssert(history.count > 0 && history.first!.id.starts(with: "sha256"))
     }
     
     func testPruneImages() async throws {
-        let image = try await client.images.pull(byName: "nginx", tag: "1.18-alpine")
+        let image = try await client.images.get("nginx:latest")
         let pruned = try await client.images.prune(all: true)
         let images = try await client.images.list()
         
@@ -129,5 +129,19 @@ final class ImageTests: XCTestCase {
         XCTAssert(image.repoTags != nil && image.repoTags!.first == "build:test", "Ensure repo and tag are set")
         XCTAssert(image.containerConfig.labels != nil && image.containerConfig.labels!["test"] == "value", "Ensure labels are set")
         try await client.images.remove(imageId!)
+    }
+    
+    func testCommit() async throws {
+        let container = try await client.containers.create(
+            name: nil,
+            spec: ContainerSpec(
+                config: ContainerConfig(image: "nginx:latest", tty: true),
+                hostConfig: .init())
+        )
+        try await client.containers.start(container.id)
+        let image = try await client.images.createFromContainer(container.id, repo: "test-commit", tag: "latest")
+        XCTAssert(image.repoTags?.first == "test-commit:latest", "Ensure image has custom repo and tag")
+        try await client.images.remove(image.id)
+        
     }
 }
