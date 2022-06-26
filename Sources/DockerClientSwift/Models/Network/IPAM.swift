@@ -23,6 +23,13 @@ public struct IPAM: Codable {
     }
     
     public struct IPAMConfig: Codable {
+        public init(subnet: String? = nil, ipRange: String? = nil, gateway: String, auxiliaryAddresses: [String : String]? = [:]) {
+            self.subnet = subnet
+            self.ipRange = ipRange
+            self.gateway = gateway
+            self.auxiliaryAddresses = auxiliaryAddresses
+        }
+        
         public var subnet: String?
         public var ipRange: String?
         public var gateway: String
