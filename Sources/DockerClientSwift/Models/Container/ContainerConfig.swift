@@ -146,6 +146,14 @@ public struct ContainerConfig: Codable {
     }
     
     public struct HealthCheckConfig: Codable {
+        public init(interval: UInt64, retries: UInt, startPeriod: UInt64, test: [String], timeout: UInt64) {
+            self.interval = interval
+            self.retries = retries
+            self.startPeriod = startPeriod
+            self.test = test
+            self.timeout = timeout
+        }
+        
         /// The time to wait between checks, in nanoseconds.
         /// It should be 0 or at least 1000000 (1 ms). 0 means inherit.
         public var interval: UInt64

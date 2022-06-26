@@ -98,6 +98,22 @@ extension DockerClient {
             return try await endpoint.map(response: response)
         }
         
+        /// Creates an image from an existing Container (`docker commit`).
+        /// - Parameters:
+        ///   - nameOrId: Name or id of the Container that should be used to build the Image.
+        ///   - spec: A `ContainerConfig`.
+        ///   - pause: Whether to pause the Container during the Image creation, defaults to `true`.
+        ///   - repo: Repository name to give to the resulting image.
+        ///   - tag: Tag name to give to the resulting image.
+        ///   - comment: A commit message.
+        /// - Throws: Errors that can occur when executing the request.
+        /// - Returns: Returns an `Image` when the image has been built, or an error is thrown.
+        public func createFromContainer(_ nameOrId: String, spec: ContainerConfig, pause: Bool = true, repo: String? = nil, tag: String? = nil, comment: String? = nil) async throws -> Image {
+            let ep = CommitContainerEndpoint(nameOrId: nameOrId, spec: spec, pause: pause, repo: repo, tag: tag, comment: comment)
+            let response = try await client.run(ep)
+            return try await get(response.Id)
+        }
+        
         /// Tags an image.
         /// - Parameters:
         ///   - nameOrId: Name or ID of the image to tag.

@@ -50,7 +50,7 @@ This means that it will work with Docker >= 20.10.
 |                             | Build                   | ✅       | basic support |
 |                             | Tag                     | ✅       |             |
 |                             | Push                    | ✅       |             |
-|                             | Create (container commit)| ❌       | TBD         |
+|                             | Create (container commit)| ✅       | untested    |
 |                             | Delete                  | ✅       |             |
 |                             | Prune                   | ✅       |             |
 |                             |                         |          |             |
