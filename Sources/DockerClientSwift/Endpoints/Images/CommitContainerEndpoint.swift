@@ -3,7 +3,7 @@ import NIOHTTP1
 
 struct CommitContainerEndpoint: Endpoint {
     typealias Response = CommitContainerResponse
-    typealias Body = ContainerConfig
+    typealias Body = ContainerConfig?
     var method: HTTPMethod = .POST
     
     var path: String {
@@ -24,7 +24,7 @@ struct CommitContainerEndpoint: Endpoint {
     private let tag: String?
     private let comment: String?
 
-    init(nameOrId: String, spec: ContainerConfig, pause: Bool, repo: String?, tag: String?, comment: String?) {
+    init(nameOrId: String, spec: ContainerConfig?, pause: Bool, repo: String?, tag: String?, comment: String?) {
         self.nameOrId = nameOrId
         self.body = spec
         self.pause = pause
