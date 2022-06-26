@@ -724,7 +724,7 @@ let docker = DockerClient(
   let job = try await docker.services.create(spec: spec)
   ```
   
-  Something more advanced? Let's create an advanced Service:
+  Something more advanced? Let's create a Service:
   - connected to a custom Network
   - storing data into a custom Volume, for each container
   - requiring a Secret
