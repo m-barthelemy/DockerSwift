@@ -102,7 +102,7 @@ final class ImageTests: XCTestCase {
             fatalError("Unable to find build context tar")
         }
         let buffer = ByteBuffer.init(data: tar)
-        var imageId: String? = nil
+        var imageId: String!
         do {
             let buildOutput = try await client.images.build(
                 config: .init(
@@ -114,7 +114,6 @@ final class ImageTests: XCTestCase {
             )
             
             for try await item in buildOutput {
-                print("\n> \(item)")
                 if item.aux != nil {
                     imageId = item.aux!.id
                 }

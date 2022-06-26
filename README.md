@@ -464,16 +464,17 @@ defer {try! docker.syncShutdown()}
       config: .init(repoTags: ["build:test"]),
       context: buffer
   )
-  var imageId: String? = nil
+  // The built Image ID is returned towards the end of the build output
+  var imageId: String!
   for try await item in buildOutput {
       if item.aux != nil {
           imageId = item.aux!.id
-          print("\n• Image ID: \(imageId!)")
       }
       else {
         print("\n• Build output: \(item.stream)")
       }
   }
+  print("\n• Image ID: \(imageId)")
   ```
   
   You can use external libraries to create TAR archives of your build context.
