@@ -528,6 +528,12 @@ public struct ContainerHostConfig: Codable {
         }
         
         public struct VolumeOptions: Codable {
+            public init(noCopy: Bool = false, labels: [String : String] = [:], driverConfig: DriverConfig? = nil) {
+                self.noCopy = noCopy
+                self.labels = labels
+                self.driverConfig = driverConfig
+            }
+            
             public var noCopy: Bool = false
             public var labels: [String:String] = [:]
             public var driverConfig: DriverConfig?
@@ -540,6 +546,11 @@ public struct ContainerHostConfig: Codable {
         }
         
         public struct TmpfsOptions: Codable {
+            public init(sizeBytes: UInt64, mode: UInt32 = 0o1777) {
+                self.sizeBytes = sizeBytes
+                self.mode = mode
+            }
+            
             /// Size of the tmpfs, in bytes.
             public var sizeBytes: UInt64
             

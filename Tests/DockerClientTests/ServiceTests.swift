@@ -74,12 +74,13 @@ final class ServiceTests: XCTestCase {
                         .volume(name: "myVolume", to: "/mnt"),
                         .tmpFs(options: .init(sizeBytes: .mb(64)))
                     ],
+                    stopSignal: .term,
                     secrets: [.init(secret)]
                 ),
                 resources: .init(
                     limits: .init(memoryBytes: .mb(64))
                 ),
-                restartPolicy: .init(condition: .any, delay: .seconds(1), maxAttempts: 2)
+                restartPolicy: .init(condition: .any, delay: .seconds(2), maxAttempts: 2)
             ),
             mode: .replicated(1),
             networks: [.init(target: network.id)],
@@ -87,7 +88,8 @@ final class ServiceTests: XCTestCase {
         )
         do {
             let service = try await client.services.create(spec: spec)
-        
+            XCTAssert(service.spec.taskTemplate.restartPolicy?.delay == .seconds(2), "Ensure custom RestartPolicy is set")
+            XCTAssert(service.spec.endpointSpec?.ports?.first?.publishedPort == 8000, "Ensure published port is set")
             try await client.services.remove(service.id)
         }
         catch(let error) {

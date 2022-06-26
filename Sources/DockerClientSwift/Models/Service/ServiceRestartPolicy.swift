@@ -29,11 +29,11 @@ public struct ServiceRestartPolicy: Codable {
     }
     
     public enum ServiceRestartCondition: String, Codable {
-        // Always restart the service
+        /// Always restart the service
         case any
-        // Never restart the service
+        /// Never restart the service
         case none
-        // Only restart the service if it fails (container stops with non-zero exit code)
+        /// Only restart the service if it fails (container stops with non-zero exit code)
         case onFailure = "on-failure"
     }
 }

@@ -106,7 +106,7 @@ public struct ServiceSpec: Codable {
         
         // MARK: - Resource
         public struct Resources: Codable {
-            internal init(limits: ServiceSpec.TaskTemplate.Resources.Limit? = nil, reservations: ServiceSpec.TaskTemplate.Resources.ResourceObject? = nil) {
+            public init(limits: ServiceSpec.TaskTemplate.Resources.Limit? = nil, reservations: ServiceSpec.TaskTemplate.Resources.ResourceObject? = nil) {
                 self.limits = limits
                 self.reservations = reservations
             }
@@ -125,7 +125,6 @@ public struct ServiceSpec: Codable {
                     self.memoryBytes = memoryBytes
                     self.pids = pids
                 }
-                
             
                 public var nanoCPUs: UInt64? = 0
                 
