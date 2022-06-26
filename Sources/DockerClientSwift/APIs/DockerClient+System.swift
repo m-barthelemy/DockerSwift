@@ -1,3 +1,4 @@
+import Foundation
 import NIO
 
 extension DockerClient {
@@ -32,9 +33,11 @@ extension DockerClient {
     }
     
     /// Stream real-time events from the Docker server.
-    /// Various objects within Docker report events when something happens to them.
-    public func events() async throws -> AsyncThrowingStream<DockerEvent, Error> {
-        let endpoint = JSONStreamingEndpoint<DockerEvent>(path: "/events")
+    /// - Parameters:
+    ///   - since: Show events created since this timestamp, then stream new events.
+    ///   - until: Show events created until this timestamp then stop streaming.
+    public func events(since: Date? = nil, until: Date? = nil) async throws -> AsyncThrowingStream<DockerEvent, Error> {
+        let endpoint = GetEventsEndpoint(since: since, until: until)
         let stream = try await run(endpoint, timeout: .hours(12), hasLengthHeader: false, separators: [UInt8(ascii: "\n")])
         return try await endpoint.map(response: stream, as: DockerEvent.self)
     }
