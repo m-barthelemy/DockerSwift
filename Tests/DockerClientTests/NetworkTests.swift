@@ -50,4 +50,24 @@ final class NetworkTests: XCTestCase {
         let pruned = try await client.networks.prune()
         XCTAssert(pruned.contains(network.name), "Ensure created Network has been deleted")
     }
+    
+    func testConnectContainer() async throws {
+        let name = UUID().uuidString
+        let image = try await client.images.pull(byIdentifier: "nginx:latest")
+        let network = try await client.networks.create(spec: .init(name: name))
+        var container = try await client.containers.create(
+            name: name,
+            spec: .init(config: .init(image: image.id))
+        )
+        try await client.networks.connect(container: container.id, to: network.id)
+        container = try await client.containers.get(container.id)
+        XCTAssert(container.networkSettings.networks?[network.name] != nil, "Ensure Container is attached to Network")
+        
+        try await client.networks.disconnect(container: container.id, from: network.id)
+        container = try await client.containers.get(container.id)
+        XCTAssert(container.networkSettings.networks?[network.name] == nil, "Ensure Container is not attached to Network")
+        
+        try await client.containers.remove(container.id, force: true)
+        try await client.networks.remove(network.id)
+    }
 }

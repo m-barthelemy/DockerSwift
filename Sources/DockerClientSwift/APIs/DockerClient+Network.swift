@@ -52,15 +52,30 @@ extension DockerClient {
             return try await client.run(PruneNetworksEndpoint()).NetworksDeleted
         }
         
+        /// Connects a Container to an existing Network.
+        /// - Parameters:
+        ///   - container: Name or Id of the`Container`.
+        ///   - to: Name or Id of the`Network`.
+        ///   - endpointSettings: Configures the network endpoint (IP Address...)
+        /// - Throws: Errors that can occur when executing the request.
+        public func connect(container: String, to networkId: String, endpointSettings: ContainerConnect.EndpointSettings? = nil) async throws {
+            try await client.run(
+                ConnectContainerEndpoint(
+                    networkNameOrId: networkId,
+                    connectConfig: .init(container: container, endpointConfig: endpointSettings)
+                )
+            )
+        }
+        
         /// Disconnects an existing Container from a Network.
         /// - Parameters:
-        ///   - nameOrId: Name or Id of the`Network`.
-        ///   - containerNameOrId: Name or Id of the`Container` to disconnect.
+        ///   - container: Name or Id of the`Container` to disconnect.
+        ///   - from: Name or Id of the`Network`.
         ///   - force: Force disconnection.
         /// - Throws: Errors that can occur when executing the request.
-        public func disconnect(_ nameOrId: String, containerNameOrId: String, force: Bool = false) async throws {
+        public func disconnect(container: String, from networkNameOrId: String, force: Bool = false) async throws {
             try await client.run(
-                DisconnectContainerEndpoint(nameOrId: nameOrId, containerNameOrId: containerNameOrId, force: force)
+                DisconnectContainerEndpoint(nameOrId: networkNameOrId, containerNameOrId: container, force: force)
             )
         }
     }

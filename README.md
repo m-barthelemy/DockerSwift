@@ -78,7 +78,7 @@ This means that it will work with Docker >= 20.10.
 |                             | Create                  | ✅       |             |
 |                             | Delete                  | ✅       |             |
 |                             | Prune                   | ✅       |             |
-|                             | (Dis)connect container  | 🚧       | WIP <sup>3</sup>|
+|                             | (Dis)connect container  | ✅       |             |
 |                             |                         |          |             |
 | Volumes                     | List                    | ✅       |             |
 |                             | Inspect                 | ✅       |             |
@@ -130,8 +130,6 @@ Note: various Docker endpoints such as list or prune support *filters*. These ar
 <sup>1</sup> Attach is currently **not** supported when connecting to Docker via local Unix socket, or when using a proxy.
 
 <sup>2</sup> Docker exec is using an unconventional protocol that requires raw access to the TCP socket. Significant work needed in order to support it.
-
-<sup>3</sup> Only Disconnect is currently implemented.
 
 
 ## Installation
@@ -536,6 +534,20 @@ let docker = DockerClient(
   
   ```swift
   try await docker.networks.remove("nameOrId")
+  ```
+</details>
+
+<details>
+  <summary>Connect an existing Container to a Network</summary>
+  
+  ```swift
+  let network = try await docker.networks.create(spec: .init(name: "myNetwork"))
+  var container = try await docker.containers.create(
+      name: "myContainer",
+      spec: .init(config: .init(image: image.id))
+  )
+  
+  try await docker.networks.connect(container: container.id, to: network.id)
   ```
 </details>
 
