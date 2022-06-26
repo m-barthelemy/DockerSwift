@@ -143,11 +143,11 @@ public struct ContainerHostConfig: Codable {
     /// The list of paths to be masked inside the container (this overrides the default set of paths).
     public var maskedPaths: [String]? = nil
     
-    /// Memory limit in bytes.
-    public var memoryLimit: UInt64 = 0
-    
     /// Memory soft limit in bytes.
     public var memoryReservation: UInt64 = 0
+    
+    /// Memory limit in bytes.
+    public var memoryLimit: UInt64 = 0
     
     /// Total memory limit (memory + swap). Set as -1 to enable unlimited swap.
     public var memorySwap: Int64 = 0
@@ -236,7 +236,7 @@ public struct ContainerHostConfig: Codable {
     /// A list of volumes to inherit from another container, specified in the form `<container name>[:<ro|rw>]`.
     public var volumesFrom: [String]? = nil
     
-    public init(autoRemove: Bool = false, binds: [String]? = nil, blkioWeight: UInt16 = 0, blkioWeightDevice: [ContainerHostConfig.BlkioWeight]? = [], blkioDeviceReadBps: ContainerHostConfig.BlkioRateLimit? = nil, blkioDeviceWriteBps: ContainerHostConfig.BlkioRateLimit? = nil, blkioDeviceReadIOps: ContainerHostConfig.BlkioRateLimit? = nil, blkioDeviceWriteIOps: ContainerHostConfig.BlkioRateLimit? = nil, capabilityAdd: [String]? = nil, capabilityDrop: [String]? = nil, cgroup: String = "", cgroupNsMode: String = "", cgroupParent: String = "", containerIdFile: String = "", cpuCount: UInt8 = 0, cpuPercent: UInt8 = 0, cpuPeriod: UInt64 = 0, cpuQuota: UInt64 = 0, cpuRealtimePeriod: UInt64 = 0, cpuRealtimeRuntime: UInt64 = 0, cpusetCpus: String = "", cpusetMems: String = "", cpuShares: UInt = 0, devices: [ContainerHostConfig.DeviceMapping]? = [], deviceCgroupRules: [String]? = nil, dns: [String]? = [], dnsOptions: [String]? = [], dnsSearch: [String]? = [], extraHosts: [String]? = [], groupAdd: [String]? = nil, init: Bool? = false, ipcMode: String = "", isolation: String = "", kernelMemory: UInt64 = 0, kernelMemoryTcp: UInt64 = 0, links: [String]? = nil, maskedPaths: [String]? = nil, memoryLimit: UInt64 = 0, memoryReservation: UInt64 = 0, memorySwap: Int64 = 0, memorySwappiness: Int8? = -1, mounts: [ContainerHostConfig.ContainerMount]? = nil, nanoCpus: UInt64 = 0, networkMode: String = "default", oomKillDisable: Bool? = false, oomScoreAdj: Int = 0, pidsLimit: UInt64? = 0, pidMode: String = "", portBindings: [ExposedPortSpec:[PortBinding]?]? = [:], privileged: Bool = false, publishAllPorts: Bool = false, readonlyPaths: [String]? = nil, readonlyRootfs: Bool = false, restartPolicy: RestartPolicy? = nil, runtime: String? = nil, securityOpt: [String]? = nil, shmSize: UInt = 0, storageOpt: [String : String]? = nil, sysctls: [String : String]? = nil, tmpfs: [String : String]? = nil, ulimits: [ContainerHostConfig.Ulimit]? = nil, userNsMode: String = "", utsMode: String = "", volumeDriver: String = "", volumesFrom: [String]? = nil) {
+    public init(autoRemove: Bool = false, binds: [String]? = nil, blkioWeight: UInt16 = 0, blkioWeightDevice: [ContainerHostConfig.BlkioWeight]? = [], blkioDeviceReadBps: ContainerHostConfig.BlkioRateLimit? = nil, blkioDeviceWriteBps: ContainerHostConfig.BlkioRateLimit? = nil, blkioDeviceReadIOps: ContainerHostConfig.BlkioRateLimit? = nil, blkioDeviceWriteIOps: ContainerHostConfig.BlkioRateLimit? = nil, capabilityAdd: [String]? = nil, capabilityDrop: [String]? = nil, cgroup: String = "", cgroupNsMode: String = "", cgroupParent: String = "", containerIdFile: String = "", cpuCount: UInt8 = 0, cpuPercent: UInt8 = 0, cpuPeriod: UInt64 = 0, cpuQuota: UInt64 = 0, cpuRealtimePeriod: UInt64 = 0, cpuRealtimeRuntime: UInt64 = 0, cpusetCpus: String = "", cpusetMems: String = "", cpuShares: UInt = 0, devices: [ContainerHostConfig.DeviceMapping]? = [], deviceCgroupRules: [String]? = nil, dns: [String]? = [], dnsOptions: [String]? = [], dnsSearch: [String]? = [], extraHosts: [String]? = [], groupAdd: [String]? = nil, init: Bool? = false, ipcMode: String = "", isolation: String = "", kernelMemory: UInt64 = 0, kernelMemoryTcp: UInt64 = 0, links: [String]? = nil, maskedPaths: [String]? = nil, memoryReservation: UInt64 = 0, memoryLimit: UInt64 = 0, memorySwap: Int64 = 0, memorySwappiness: Int8? = -1, mounts: [ContainerHostConfig.ContainerMount]? = nil, nanoCpus: UInt64 = 0, networkMode: String = "default", oomKillDisable: Bool? = false, oomScoreAdj: Int = 0, pidsLimit: UInt64? = 0, pidMode: String = "", portBindings: [ExposedPortSpec:[PortBinding]?]? = [:], privileged: Bool = false, publishAllPorts: Bool = false, readonlyPaths: [String]? = nil, readonlyRootfs: Bool = false, restartPolicy: RestartPolicy? = nil, runtime: String? = nil, securityOpt: [String]? = nil, shmSize: UInt = 0, storageOpt: [String : String]? = nil, sysctls: [String : String]? = nil, tmpfs: [String : String]? = nil, ulimits: [ContainerHostConfig.Ulimit]? = nil, userNsMode: String = "", utsMode: String = "", volumeDriver: String = "", volumesFrom: [String]? = nil) {
         self.autoRemove = autoRemove
         self.binds = binds
         self.blkioWeight = blkioWeight
@@ -274,8 +274,8 @@ public struct ContainerHostConfig: Codable {
         self.kernelMemoryTcp = kernelMemoryTcp
         self.links = links
         self.maskedPaths = maskedPaths
-        self.memoryLimit = memoryLimit
         self.memoryReservation = memoryReservation
+        self.memoryLimit = memoryLimit
         self.memorySwap = memorySwap
         self.memorySwappiness = memorySwappiness
         self.mounts = mounts

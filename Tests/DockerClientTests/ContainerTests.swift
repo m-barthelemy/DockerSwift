@@ -55,7 +55,6 @@ final class ContainerTests: XCTestCase {
     }
     
     func testCreateContainer() async throws {
-        let memory: UInt64 = .mb(64)
         let cmd = ["/custom/command", "--option"]
         let spec = ContainerSpec(
             config: .init(
@@ -70,12 +69,12 @@ final class ContainerTests: XCTestCase {
                 labels: ["label1": "value1", "label2": "value2"]
             ),
             hostConfig: .init(
-                // Maximum memory the container can use
-                memoryLimit: memory,
                 // Memory the container is allocated when starting
-                memoryReservation: memory/2,
+                memoryReservation: .mb(32),
+                // Maximum memory the container can use
+                memoryLimit: .mb(64),
                 // Needs to be either disabled (-1) or be equal to, or greater than, `memoryLimit`
-                memorySwap: Int64(memory),
+                memorySwap: .mb(64),
                 // Let's publish the port we exposed in `config`
                 portBindings: [.tcp(80): [.publishTo(hostIp: "0.0.0.0", hostPort: 8008)]]
             )
@@ -94,7 +93,7 @@ final class ContainerTests: XCTestCase {
             container.hostConfig.portBindings != nil && container.hostConfig.portBindings![.tcp(80)] != nil,
             "Ensure Published Port was set and retrieved"
         )
-        XCTAssert(container.hostConfig.memoryLimit == memory, "Ensure MemoryLimit is set")
+        XCTAssert(container.hostConfig.memoryLimit == .mb(64), "Ensure MemoryLimit is set")
         
         try await client.containers.remove(container.id)
     }

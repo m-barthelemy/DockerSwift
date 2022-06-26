@@ -261,7 +261,6 @@ let docker = DockerClient(
   
   Docker allows customizing many parameters:
   ```swift
-  let memory: UInt64 = .mb(128) // 128MB
   let spec = ContainerSpec(
       config: .init(
           // Override the default command of the Image
@@ -275,12 +274,12 @@ let docker = DockerClient(
           labels: ["label1": "value1", "label2": "value2"]
       ),
       hostConfig: .init(
-          // Maximum memory the container can use
-          memoryLimit: memory,
           // Memory the container is allocated when starting
-          memoryReservation: memory/2,
+          memoryReservation: .mb(64),
+          // Maximum memory the container can use
+          memoryLimit: .mb(128) // 128MB,
           // Needs to be either disabled (-1) or be equal to, or greater than, `memoryLimit`
-          memorySwap: Int64(memory),
+          memorySwap: .mb(128),
           // Let's publish the port we exposed in `config`
           portBindings: [.tcp(80): [.publishTo(hostIp: "0.0.0.0", hostPort: 8000)]]
       )
@@ -294,8 +293,7 @@ let docker = DockerClient(
   
   Let's update the memory limits for an existing container:
   ```swift
-  let newMemory: UInt64 = .mb(64) // 64MB
-  let newConfig = ContainerUpdate(memoryLimit: newMemory, memorySwap: Int64(newMemory)
+  let newConfig = ContainerUpdate(memoryLimit: .mb(64), memorySwap: .mb(64))
   try await docker.containers.update("nameOrId", spec: newConfig)
   ```
 </details>
