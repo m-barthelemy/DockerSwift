@@ -76,11 +76,19 @@ struct BuildEndpoint: UploadEndpoint {
                         }
                         let splat = data.split(separator: 10 /* ascii code for \n */)
                         guard splat.count >= 1 else {
+                            print("\n!!! Expected json terminated by line return")
                             continuation.finish(throwing: DockerError.unknownResponse("Expected json terminated by line return"))
                             return
                         }
-                        for streamItem in splat {                            
-                            let model = try decoder.decode(BuildStreamOutput.self, from: streamItem)
+                        for streamItem in splat {
+                            let model: BuildStreamOutput!
+                            do {
+                                model = try decoder.decode(BuildStreamOutput.self, from: streamItem)
+                            }
+                            catch(let error) {
+                                continuation.finish(throwing: error)
+                                return
+                            }
                             guard model.message == nil else {
                                 continuation.finish(throwing: DockerError.message(model.message!))
                                 return

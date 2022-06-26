@@ -61,7 +61,7 @@ final class ServiceTests: XCTestCase {
         try await client.services.remove(service.id)
     }
     
-    func testCreateServiceWithNetandSecret() async throws {
+    func testCreateServiceWithNetRestartSecretVol() async throws {
         let name = UUID().uuidString
         let network = try await client.networks.create(spec: .init(name: name, driver: "overlay"))
         let secret = try await client.secrets.create(spec: .init(name: name, value: "blublublu"))
@@ -78,7 +78,8 @@ final class ServiceTests: XCTestCase {
                 ),
                 resources: .init(
                     limits: .init(memoryBytes: .mb(64))
-                )
+                ),
+                restartPolicy: .init(condition: .any, delay: .seconds(1), maxAttempts: 2)
             ),
             mode: .replicated(1),
             networks: [.init(target: network.id)],

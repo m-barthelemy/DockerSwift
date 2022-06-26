@@ -431,8 +431,8 @@ let docker = DockerClient(
   Pull an image from a registry that requires authentication:
   ```swift
   var credentials = RegistryAuth(username: "myUsername", password: "....")
-  let registryAuth = try await docker.registries.login(credentials: &credentials)
-  let image = try await docker.images.pull(byIdentifier: "my-private-image:latest", credentials: registryAuth)
+  try await docker.registries.login(credentials: &credentials)
+  let image = try await docker.images.pull(byIdentifier: "my-private-image:latest", credentials: credentials)
   ```
   > NOTE: `RegistryAuth` also accepts a `serverAddress` parameter in order to use a custom registry.
   
@@ -445,8 +445,8 @@ let docker = DockerClient(
   Supposing that the Docker deamon has an image named "my-private-image:latest":
   ```swift
   var credentials = RegistryAuth(username: "myUsername", password: "....")
-  let registryAuth = try await docker.registries.login(credentials: &credentials)
-  try await docker.images.push("my-private-image:latest", credentials: registryAuth)
+  try await docker.registries.login(credentials: &credentials)
+  try await docker.images.push("my-private-image:latest", credentials: credentials)
   ```
   > NOTE: `RegistryAuth` also accepts a `serverAddress` parameter in order to use a custom registry.
 </details>
@@ -729,6 +729,7 @@ let docker = DockerClient(
   - storing data into a custom Volume, for each container
   - requiring a Secret
   - publishing the port 80 of the containers to the port 8000 of each Docker Swarm node
+  - getting restarted automatically in case of failure
   ```swift
   let network = try await docker.networks.create(spec: .init(name: "myNet", driver: "overlay"))
   let secret = try await docker.secrets.create(spec: .init(name: "myPassword", value: "blublublu"))
@@ -744,7 +745,9 @@ let docker = DockerClient(
           ),
           resources: .init(
               limits: .init(memoryBytes: .mb(64))
-          )
+          ),
+          // If a container exits or crashes, replace it with a new one.
+          restartPolicy: .init(condition: .any, delay: .seconds(2), maxAttempts: 2)
       ),
       mode: .replicated(1),
       // Add our custom Network

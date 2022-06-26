@@ -63,7 +63,8 @@ extension DockerClient {
                 // Arbitrary timeouts.
                 // TODO: should probably make these configurable
                 timeout: follow ? .hours(12) : .seconds(60),
-                hasLengthHeader: !tty
+                hasLengthHeader: !tty,
+                separators: [UInt8(10)]
             )
             return try await endpoint.map(response: response, tty: task.spec.containerSpec.tty ?? false)
         }

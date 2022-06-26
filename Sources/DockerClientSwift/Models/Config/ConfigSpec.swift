@@ -1,5 +1,6 @@
 import Foundation
 
+/// Configuration for creating a new Docker Swarm Config
 public struct ConfigSpec: Codable {
     /// User-defined name of the config.
     public var name: String

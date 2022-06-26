@@ -2,16 +2,18 @@ import Foundation
 
 public struct ServiceRestartPolicy: Codable {
     /// Condition for restart.
-    let condition: ServiceRestartCondition
+    public var condition: ServiceRestartCondition
     
-    /// Delay between restart attempts.
-    let delay: UInt64
+    /// Delay between restart attempts, in nanoseconds.
+    public var delay: UInt64
     
-    /// Maximum attempts to restart a given container before giving up (default value is 0, which is ignored).
-    let maxAttempts: UInt64
+    /// Maximum attempts to restart a given container before giving up .
+    /// Default value is 0, which is ignored.
+    public var maxAttempts: UInt64 = 0
     
-    /// Time window used to evaluate the restart policy (default value is 0, which is unbounded).
-    let window: UInt64? = 0
+    /// Time window used to evaluate the restart policy, in nanoseconds.
+    /// Default value is 0, which is unbounded.
+    public var window: UInt64? = 0
     
     public init(condition: ServiceRestartPolicy.ServiceRestartCondition = .onFailure, delay: UInt64, maxAttempts: UInt64) {
         self.condition = condition

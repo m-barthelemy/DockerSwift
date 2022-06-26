@@ -1,8 +1,6 @@
 import XCTest
 @testable import DockerClientSwift
 import Logging
-// Tarscape not available on Linux
-//import Tarscape
 import NIO
 
 final class ImageTests: XCTestCase {
@@ -33,7 +31,7 @@ final class ImageTests: XCTestCase {
             fatalError("REGISTRY_PASSWORD is not set")
         }
         var credentials = RegistryAuth(username: "mbarthelemy", password: password)
-        let registry = try await client.registries.login(credentials: &credentials)
+        try await client.registries.login(credentials: &credentials)
         
         let tag = UUID().uuidString
         let image = try await client.images.pull(byName: "hello-world", tag: "latest")
@@ -97,35 +95,39 @@ final class ImageTests: XCTestCase {
         XCTAssert(pruned.imageIds.contains(image.id))
     }
     
-    // Tarscape not available on Linux
-    /*func testBuild() async throws {
+    func testBuild() async throws {
         let fm = FileManager.default
-        let tarContextPath = "/tmp/docker-build.tar"
-        try fm.createTar(
-            at: URL(fileURLWithPath: tarContextPath),
-            from: URL(string: "file:///\(fm.currentDirectoryPath)/Tests")!
-        )
-        let tar = fm.contents(atPath: tarContextPath)
-        let buffer = ByteBuffer.init(data: tar!)
-        let buildOutput = try await client.images.build(
-            config: .init(
-                repoTags: ["build:test"],
-                buildArgs: ["TEST": "test"],
-                labels: ["test": "value"]
-            ),
-            context: buffer
-        )
-        var imageId: String? = nil
-        for try await item in buildOutput {
-            if item.aux != nil {
-                imageId = item.aux!.id
-            }
+        let tarContextPath = "./Tests/docker-context.tar"
+        guard let tar = fm.contents(atPath: tarContextPath) else {
+            fatalError("Unable to find build context tar")
         }
-        XCTAssert(imageId != nil, "Ensure built Image ID is returned")
-        
-        let image = try await client.images.get(imageId!)
+        let buffer = ByteBuffer.init(data: tar)
+        var imageId: String? = nil
+        do {
+            let buildOutput = try await client.images.build(
+                config: .init(
+                    repoTags: ["build:test"],
+                    buildArgs: ["TEST": "test"],
+                    labels: ["test": "value"]
+                ),
+                context: buffer
+            )
+            
+            for try await item in buildOutput {
+                print("\n> \(item)")
+                if item.aux != nil {
+                    imageId = item.aux!.id
+                }
+            }
+            XCTAssert(imageId != nil, "Ensure built Image ID is returned")
+        }
+        catch(let error) {
+            print("\n•••• BOOM! \(error)")
+            throw error
+        }
+        let image = try await client.images.get(imageId ?? "")
         XCTAssert(image.repoTags != nil && image.repoTags!.first == "build:test", "Ensure repo and tag are set")
         XCTAssert(image.containerConfig.labels != nil && image.containerConfig.labels!["test"] == "value", "Ensure labels are set")
         try await client.images.remove(imageId!)
-    }*/
+    }
 }

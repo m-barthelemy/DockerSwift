@@ -1,5 +1,6 @@
 import Foundation
 
+/// Configuration for creating a new Docker Swarm Secret.
 public struct SecretSpec: Encodable {
     /// User-defined name of the secret.
     public var name: String

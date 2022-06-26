@@ -136,7 +136,8 @@ extension DockerClient {
                 // Arbitrary timeouts.
                 // TODO: should probably make these configurable
                 timeout: follow ? .hours(12) : .seconds(60),
-                hasLengthHeader: !container.config.tty
+                hasLengthHeader: !container.config.tty,
+                separators: [UInt8(13)]
             )
             
             return try await endpoint.map(response: response, tty: container.config.tty)
@@ -210,7 +211,7 @@ extension DockerClient {
         /// - Returns: Returns a stream of `ContainerStats`instances.
         public func stats(_ nameOrId: String, stream: Bool = true, oneShot: Bool = false) async throws -> AsyncThrowingStream<ContainerStats, Error> {
             let endpoint = GetContainerStatsEndpoint(nameOrId: nameOrId, stream: stream, oneShot: oneShot)
-            let stream = try await client.run(endpoint, timeout: .hours(12), hasLengthHeader: false)
+            let stream = try await client.run(endpoint, timeout: .hours(12), hasLengthHeader: false, separators: [UInt8(13)])
             return try await endpoint.map(response: stream, as: ContainerStats.self)
         }
     }

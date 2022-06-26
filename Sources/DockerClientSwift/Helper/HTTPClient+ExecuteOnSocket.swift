@@ -30,7 +30,7 @@ extension HTTPClient {
         }
     }
     
-    internal func executeStream(_ method: HTTPMethod = .GET, daemonURL: URL, urlPath: String, body: HTTPClientRequest.Body? = nil, timeout: TimeAmount, logger: Logger, headers: HTTPHeaders, hasLengthHeader: Bool = false) async throws -> AsyncThrowingStream<ByteBuffer, Error> {
+    internal func executeStream(_ method: HTTPMethod = .GET, daemonURL: URL, urlPath: String, body: HTTPClientRequest.Body? = nil, timeout: TimeAmount, logger: Logger, headers: HTTPHeaders, hasLengthHeader: Bool = false, separators: [UInt8]) async throws -> AsyncThrowingStream<ByteBuffer, Error> {
         
         guard let url = URL(string: daemonURL.absoluteString.trimmingCharacters(in: .init(charactersIn: "/")) + urlPath) else {
             throw HTTPClientError.invalidURL
@@ -49,13 +49,25 @@ extension HTTPClient {
                 var messageBuffer = ByteBuffer()
                 var availablebytes = 0
                 var neededBytes = 0
-                
                 for try await var buffer in body {
                     if !hasLengthHeader {
-                        messageBuffer = buffer
-                        continuation.yield(messageBuffer)
+                        messageBuffer.writeBuffer(&buffer)
+                        while messageBuffer.readableBytes > 0 {
+                            guard let lineEndPos = messageBuffer.readableBytesView.firstRange(of: separators)?.lowerBound, lineEndPos > 0 else {
+                                break
+                            }
+                            guard let data = messageBuffer.readData(length: lineEndPos - messageBuffer.readerIndex + separators.count) else {
+                                continuation.finish(throwing: DockerError.corruptedData("Unable to get Data() from ByteBuffer"))
+                                return
+                            }
+                            let returnBuffer = ByteBuffer(data: data)
+                                _ = messageBuffer.readBytes(length: 1)
+                            
+                            continuation.yield(returnBuffer)
+                        }
                         continue
                     }
+                    
                     availablebytes += buffer.readableBytes
                     messageBuffer.writeBuffer(&buffer)
                     //print("\n•••• executeStream: availablebytes=\(availablebytes), neededBytes=\(neededBytes), buffer.readableBytes=\(buffer.readableBytes)")
@@ -68,7 +80,6 @@ extension HTTPClient {
                         }
                         
                         neededBytes = Int(msgSize + lengthHeaderSize)
-                        //print("\n•••• executeStream: availablebytes=\(availablebytes), neededBytes=\(neededBytes), buffer.readableBytes=\(buffer.readableBytes)")
                         if availablebytes >= neededBytes {
                             guard let data = messageBuffer.readData(length: neededBytes) else {
                                 continuation.finish(

@@ -121,7 +121,7 @@ public class DockerClient {
     }
     
     @discardableResult
-    internal func run<T: StreamingEndpoint>(_ endpoint: T, timeout: TimeAmount, hasLengthHeader: Bool) async throws -> T.Response {
+    internal func run<T: StreamingEndpoint>(_ endpoint: T, timeout: TimeAmount, hasLengthHeader: Bool, separators: [UInt8]) async throws -> T.Response {
         logger.debug("\(Self.self) execute StreamingEndpoint: \(endpoint.method) \(endpoint.path)")
         let stream = try await client.executeStream(
             endpoint.method,
@@ -133,13 +133,14 @@ public class DockerClient {
             timeout: timeout,
             logger: logger,
             headers: self.headers,
-            hasLengthHeader: hasLengthHeader
+            hasLengthHeader: hasLengthHeader,
+            separators: separators
         )
         return stream as! T.Response
     }
     
     @discardableResult
-    internal func run<T: UploadEndpoint>(_ endpoint: T, timeout: TimeAmount) async throws -> T.Response {
+    internal func run<T: UploadEndpoint>(_ endpoint: T, timeout: TimeAmount, separators: [UInt8]) async throws -> T.Response {
         logger.debug("\(Self.self) execute \(T.self): \(endpoint.path)")
         let stream = try await client.executeStream(
             endpoint.method,
@@ -148,7 +149,8 @@ public class DockerClient {
             body: endpoint.body == nil ? nil : .bytes(endpoint.body!),
             timeout: timeout,
             logger: logger,
-            headers: self.headers
+            headers: self.headers,
+            separators: separators
         )
         return stream as! T.Response
     }

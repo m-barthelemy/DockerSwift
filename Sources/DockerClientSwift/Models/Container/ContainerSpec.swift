@@ -1,5 +1,6 @@
 import Foundation
 
+/// The configuration to create a new Docker Container.
 public struct ContainerSpec: Codable {
     /// Configuration specific to the container, and independent from the host it is running on.
     public var config: ContainerConfig?

@@ -14,8 +14,7 @@ extension DockerClient {
         /// - Parameters:
         ///   - credentials: configuration as a `RegistryAuth`.
         /// - Throws: Errors that can occur when executing the request.
-        /// - Returns: Returns the `RegistryAuth` passed as a parameter, with the `token` field set if authentication was successful.
-        public func login(credentials: inout RegistryAuth) async throws -> RegistryAuth {
+        public func login(credentials: inout RegistryAuth) async throws {
             let response = try await client.run(RegistryLoginEndpoint(credentials: credentials))
             if response.IdentityToken != "" {
                 credentials.token = response.IdentityToken
@@ -25,7 +24,7 @@ extension DockerClient {
                 let encoded = try encoder.encode(credentials) 
                 credentials.token = encoded.base64EncodedString()
             }
-            return credentials
+            //return credentials
         }
         
     }
