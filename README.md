@@ -280,7 +280,7 @@ defer {try! docker.syncShutdown()}
           // Memory the container is allocated when starting
           memoryReservation: .mb(64),
           // Maximum memory the container can use
-          memoryLimit: .mb(128) // 128MB,
+          memoryLimit: .mb(128), // 128MB
           // Needs to be either disabled (-1) or be equal to, or greater than, `memoryLimit`
           memorySwap: .mb(128),
           // Let's publish the port we exposed in `config`
