@@ -352,7 +352,7 @@ defer {try! docker.syncShutdown()}
   ```swift
   let service = try await docker.containers.get("nameOrId")
         
-  for try await line in try await docker.containers.logs(service: service, follow: true) {
+  for try await line in try await docker.containers.logs(container: container, follow: true) {
       print(line.message + "\n")
   }
   ```
@@ -361,7 +361,7 @@ defer {try! docker.syncShutdown()}
   ```swift
   let service = try await docker.containers.get("nameOrId")
         
-  for try await line in try await docker.containers.logs(service: service, tail: 100) {
+  for try await line in try await docker.containers.logs(container: container, tail: 100) {
       print(line.message + "\n")
   }
   ```
