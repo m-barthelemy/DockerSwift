@@ -139,12 +139,12 @@ import PackageDescription
 
 let package = Package(
     dependencies: [
-        .package(url: "https://github.com/m-barthelemy/docker-client-swift.git", .branch("main")),
+        .package(url: "https://github.com/m-barthelemy/DockerSwift.git", .branch("main")),
     ],
     targets: [
         .target(name: "App", dependencies: [
             ...
-            .product(name: "DockerClientSwift", package: "docker-client-swift")
+            .product(name: "DockerSwift", package: "DockerSwift")
         ]),
     ...
     ]
@@ -153,7 +153,7 @@ let package = Package(
 
 ### Xcode Project
 To add DockerClientSwift to your existing Xcode project, select File -> Swift Packages -> Add Package Dependancy. 
-Enter `https://github.com/m-barthelemy/docker-client-swift.git` for the URL.
+Enter `https://github.com/m-barthelemy/DockerSwift.git` for the URL.
 
 
 ## Usage Examples
