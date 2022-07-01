@@ -13,7 +13,7 @@ let package = Package(
         // Container attach endpoint
         .package(url: "https://github.com/m-barthelemy/websocket-kit.git", .branch("main")),
         // Only used for parsing the multiple and inconsistent date formats returned by Docker
-        .package(url: "https://github.com/marksands/BetterCodable.git", from: "0.4.0"),
+        .package(url: "https://github.com/marksands/BetterCodable.git", from: "0.4.0")
         // Some Docker features receive or return TAR archives. Used by tests
         //.package(url: "https://github.com/kayembi/Tarscape.git", .branch("main")),
     ],
@@ -27,7 +27,7 @@ let package = Package(
                 "BetterCodable",
             ]),
         .testTarget(
-            name: "DockerClientTests",
+            name: "DockerSwiftTests",
             dependencies: [
                 "DockerSwift",
                 //"Tarscape"

@@ -1,4 +1,4 @@
-import DockerClientSwift
+import DockerSwift
 import Logging
 import NIOSSL
 

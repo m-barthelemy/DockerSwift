@@ -1,5 +1,5 @@
 import XCTest
-@testable import DockerClientSwift
+@testable import DockerSwift
 import Logging
 import NIO
 
