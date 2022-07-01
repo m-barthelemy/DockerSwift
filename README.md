@@ -162,18 +162,24 @@ Enter `https://github.com/m-barthelemy/DockerSwift.git` for the URL.
 
 Local socket (defaults to `/var/run/docker.sock`):
 ```swift
+import DockerSwift
+
 let docker = DockerClient()
 defer {try! docker.syncShutdown()}
 ```
 
 Remote daemon over HTTP:
 ```swift
+import DockerSwift
+
 let docker = DockerClient(deamonURL: .init(string: "http://127.0.0.1:2375")!)
 defer {try! docker.syncShutdown()}
 ```
 
 Remote daemon over HTTPS, using a client certificate for authentication:
 ```swift
+import DockerSwift
+
 var tlsConfig = TLSConfiguration.makeClientConfiguration()
 tlsConfig.privateKey = NIOSSLPrivateKeySource.file("client-key.pem")
 tlsConfig.certificateChain.append(NIOSSLCertificateSource.file("client-certificate.pem"))
