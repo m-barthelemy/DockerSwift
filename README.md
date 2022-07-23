@@ -3,7 +3,7 @@
 [![Docker Engine API](https://img.shields.io/badge/Docker%20Engine%20API-%20%201.41-blue)](https://docs.docker.com/engine/api/v1.41/)
 [![Platforms](https://img.shields.io/badge/platform-linux--64%20%7C%20osx--64-blue)]()
 
-This is a low-level, **work in progress** Docker Client written in Swift. It very closely follows the Docker API.
+This is a low-level Docker Client written in Swift. It very closely follows the Docker API.
 
 It fully uses the Swift concurrency features introduced with Swift 5.5 (`async`/`await`).
 
