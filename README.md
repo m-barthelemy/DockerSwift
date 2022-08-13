@@ -356,7 +356,7 @@ defer {try! docker.syncShutdown()}
   
   Wait for future log messages:
   ```swift
-  let service = try await docker.containers.get("nameOrId")
+  let container = try await docker.containers.get("nameOrId")
         
   for try await line in try await docker.containers.logs(container: container, follow: true) {
       print(line.message + "\n")
@@ -365,7 +365,7 @@ defer {try! docker.syncShutdown()}
   
   Only the last 100 messages:
   ```swift
-  let service = try await docker.containers.get("nameOrId")
+  let container = try await docker.containers.get("nameOrId")
         
   for try await line in try await docker.containers.logs(container: container, tail: 100) {
       print(line.message + "\n")
