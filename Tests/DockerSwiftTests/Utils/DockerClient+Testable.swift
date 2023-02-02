@@ -14,7 +14,7 @@ extension DockerClient {
         return DockerClient(logger: logger)
         
         // Remote via simple HTTP
-        //return DockerClient(deamonURL: .init(string: "http://127.0.0.1:2375")!, logger: logger)
+        //return DockerClient(daemonURL: .init(string: "http://127.0.0.1:2375")!, logger: logger)
         
         // Remote daemon, using HTTPS and client certs authentication
         /*var tlsConfig = TLSConfiguration.makeClientConfiguration()
@@ -23,7 +23,7 @@ extension DockerClient {
         tlsConfig.additionalTrustRoots.append(.file("ca-public.pem"))
         tlsConfig.certificateVerification = .noHostnameVerification
         return DockerClient(
-            deamonURL: .init(string: "https://51.15.19.7:2376")!,
+            daemonURL: .init(string: "https://51.15.19.7:2376")!,
             tlsConfig: tlsConfig,
             logger: logger
         )*/

@@ -21,7 +21,7 @@ This means that it will work with Docker >= 20.10.
 |                             | HTTP                    | ✅       |             |
 |                             | HTTPS                   | ✅       |             |
 |                             |                         |          |             |
-| Docker deamon & System info | Ping                    | ✅       |             |
+| Docker daemon & System info | Ping                    | ✅       |             |
 |                             | Info                    | ✅       |             |
 |                             | Version                 | ✅       |             |
 |                             | Events                  | ✅       |             |
@@ -158,7 +158,7 @@ Enter `https://github.com/m-barthelemy/DockerSwift.git` for the URL.
 
 ## Usage Examples
 
-### Connect to a Docker deamon
+### Connect to a Docker daemon
 
 Local socket (defaults to `/var/run/docker.sock`):
 ```swift
@@ -172,7 +172,7 @@ Remote daemon over HTTP:
 ```swift
 import DockerSwift
 
-let docker = DockerClient(deamonURL: .init(string: "http://127.0.0.1:2375")!)
+let docker = DockerClient(daemonURL: .init(string: "http://127.0.0.1:2375")!)
 defer {try! docker.syncShutdown()}
 ```
 
@@ -187,7 +187,7 @@ tlsConfig.additionalTrustRoots.append(.file("docker-daemon-ca.pem"))
 tlsConfig.certificateVerification = .noHostnameVerification
 
 let docker = DockerClient(
-    deamonURL: .init(string: "https://your.docker.daemon:2376")!,
+    daemonURL: .init(string: "https://your.docker.daemon:2376")!,
     tlsConfig: tlsConfig
 )
 defer {try! docker.syncShutdown()}
@@ -447,7 +447,7 @@ defer {try! docker.syncShutdown()}
 <details>
   <summary>Push an image</summary>
 
-  Supposing that the Docker deamon has an image named "my-private-image:latest":
+  Supposing that the Docker daemon has an image named "my-private-image:latest":
   ```swift
   var credentials = RegistryAuth(username: "myUsername", password: "....")
   try await docker.registries.login(credentials: &credentials)
@@ -615,7 +615,7 @@ defer {try! docker.syncShutdown()}
 </details>
 
 <details>
-  <summary>Make the Docker deamon to join an existing Swarm cluster</summary>
+  <summary>Make the Docker daemon to join an existing Swarm cluster</summary>
   
   ```swift
   // This first client points to an existing Swarm cluster manager

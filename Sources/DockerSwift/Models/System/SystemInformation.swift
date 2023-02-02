@@ -129,7 +129,7 @@ public struct SystemInformation: Codable {
     /// Note: Containers do not automatically inherit this configuration.
     public let noProxy: String
     
-    /// Hostname of the host where the Docker deamon is running.
+    /// Hostname of the host where the Docker daemon is running.
     public let name: String
     
     public let labels: [String]

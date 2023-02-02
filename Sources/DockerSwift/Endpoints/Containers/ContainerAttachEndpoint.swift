@@ -62,7 +62,7 @@ final class ContainerAttachEndpoint {
     func connect() async throws -> ContainerAttach {
         let config = WebSocketClient.Configuration(tlsConfiguration: self.dockerClient.tlsConfig)
         
-        let scheme = self.dockerClient.deamonURL.scheme
+        let scheme = self.dockerClient.daemonURL.scheme
         guard scheme == "http" || scheme == "https" else {
             throw DockerError.unsupportedScheme("Attach only supports connecting to docker daemons via HTTP or HTTPS")
         }
@@ -71,9 +71,9 @@ final class ContainerAttachEndpoint {
             Task {
                 try await WebSocket.connect(
                     scheme: scheme == "https" ? "wss" : "ws",
-                    host: self.dockerClient.deamonURL.host ?? self.dockerClient.deamonURL.path,
-                    port: self.dockerClient.deamonURL.port ?? (self.dockerClient.deamonURL.scheme == "https" ? 2376 : 2375),
-                    path: "\(self.dockerClient.deamonURL.path)/\(self.dockerClient.apiVersion)/\(self.path)",
+                    host: self.dockerClient.daemonURL.host ?? self.dockerClient.daemonURL.path,
+                    port: self.dockerClient.daemonURL.port ?? (self.dockerClient.daemonURL.scheme == "https" ? 2376 : 2375),
+                    path: "\(self.dockerClient.daemonURL.path)/\(self.dockerClient.apiVersion)/\(self.path)",
                     query: self.query,
                     headers: [:],
                     configuration: config,

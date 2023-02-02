@@ -15,7 +15,7 @@ public class DockerClient {
     ])
     private let decoder: JSONDecoder
     
-    internal let deamonURL: URL
+    internal let daemonURL: URL
     internal let tlsConfig: TLSConfiguration?
     internal let client: HTTPClient
     private let logger: Logger
@@ -30,7 +30,7 @@ public class DockerClient {
     ///   - timeout: Pass custom connect and read timeouts via a `HTTPClient.Configuration.Timeout` instance
     ///   - proxy: Proxy settings, defaults to `nil`.
     public init(
-        deamonURL: URL = URL(httpURLWithSocketPath: "/var/run/docker.sock")!,
+        daemonURL: URL = URL(httpURLWithSocketPath: "/var/run/docker.sock")!,
         tlsConfig: TLSConfiguration? = nil,
         logger: Logger = .init(label: "docker-client"),
         clientThreads: Int = 2,
@@ -38,7 +38,7 @@ public class DockerClient {
         proxy: HTTPClient.Configuration.Proxy? = nil
     ) {
             
-            self.deamonURL = deamonURL
+            self.daemonURL = daemonURL
             self.tlsConfig = tlsConfig
             let clientConfig = HTTPClient.Configuration(
                 tlsConfiguration: tlsConfig,
@@ -88,7 +88,7 @@ public class DockerClient {
         }
         return try await client.execute(
             endpoint.method,
-            daemonURL: self.deamonURL,
+            daemonURL: self.daemonURL,
             urlPath: "/\(apiVersion)/\(endpoint.path)",
             body: endpoint.body.map {HTTPClient.Body.data( try! $0.encode())},
             logger: logger,
@@ -109,7 +109,7 @@ public class DockerClient {
         logger.debug("\(Self.self) execute PipelineEndpoint: \(endpoint.method) \(endpoint.path)")
         return try await client.execute(
             endpoint.method,
-            daemonURL: self.deamonURL,
+            daemonURL: self.daemonURL,
             urlPath: "/\(apiVersion)/\(endpoint.path)",
             body: endpoint.body.map {HTTPClient.Body.data( try! $0.encode())},
             logger: logger,
@@ -125,7 +125,7 @@ public class DockerClient {
         logger.debug("\(Self.self) execute StreamingEndpoint: \(endpoint.method) \(endpoint.path)")
         let stream = try await client.executeStream(
             endpoint.method,
-            daemonURL: self.deamonURL,
+            daemonURL: self.daemonURL,
             urlPath: "/\(apiVersion)/\(endpoint.path)",
             body: endpoint.body.map {
                 HTTPClientRequest.Body.bytes( try! $0.encode())
@@ -144,7 +144,7 @@ public class DockerClient {
         logger.debug("\(Self.self) execute \(T.self): \(endpoint.path)")
         let stream = try await client.executeStream(
             endpoint.method,
-            daemonURL: self.deamonURL,
+            daemonURL: self.daemonURL,
             urlPath: "/\(apiVersion)/\(endpoint.path)",
             body: endpoint.body == nil ? nil : .bytes(endpoint.body!),
             timeout: timeout,
