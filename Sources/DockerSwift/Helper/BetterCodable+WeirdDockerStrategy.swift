@@ -1,9 +1,10 @@
 import Foundation
 import BetterCodable
 
-/// the inconsistent date format used by Docker for containers, images and Version Buildtime
+/// The inconsistent date format used by Docker for containers, images and Version Buildtime
 /// when set, format is "yyyy-MM-dd'T'HH:mm:ss.SSSSSSSS'Z'"
 /// when not set, docker returns "0001-01-01T00:00:00Z"
+/// Note: this comes from Golang's defaults.
 public struct WeirdDockerStrategy: DateValueCodableStrategy {
     
     private static let formatter: DateFormatter = {

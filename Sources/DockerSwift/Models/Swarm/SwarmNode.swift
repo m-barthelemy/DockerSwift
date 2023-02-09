@@ -148,7 +148,7 @@ public struct SwarmManagerStatus: Codable {
 
 public struct SwarmNodeSpec: Codable {
     public var name: String?
-    public var labels: [String:String]
+    public var labels: [String:String]?
     public var role: SwarmNodeRole
     public var availability: SwarmNodeAvailability
     
@@ -157,5 +157,12 @@ public struct SwarmNodeSpec: Codable {
         case labels = "Labels"
         case role = "Role"
         case availability = "Availability"
+    }
+    
+    public init(name: String? = nil, labels: [String : String]? = nil, role: SwarmNodeRole, availability: SwarmNodeAvailability) {
+        self.name = name
+        self.labels = labels
+        self.role = role
+        self.availability = availability
     }
 }
