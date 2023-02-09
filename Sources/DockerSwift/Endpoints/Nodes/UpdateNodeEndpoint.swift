@@ -8,9 +8,9 @@ struct UpdateNodeEndpoint: Endpoint {
     
     var body: Body?
     let id: String
-    let version: String
+    let version: UInt64
     
-    init(id: String, version: String, spec: SwarmNodeSpec) {
+    init(id: String, version: UInt64, spec: SwarmNodeSpec) {
         self.id = id
         self.version = version
         self.body = spec

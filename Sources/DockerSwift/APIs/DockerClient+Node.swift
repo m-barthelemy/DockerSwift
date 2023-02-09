@@ -30,7 +30,7 @@ extension DockerClient {
         ///   - id: the ID of the Swarm Node to update.
         ///   - version: the current version fo the Swarm Node config. Can be obtained using `get()`.  This is required to avoid conflicting writes.
         ///   - spec: the `SwarmNodeSpec` config to apply to the Node.
-        public func update(id: String, version: String, spec: SwarmNodeSpec) async throws {
+        public func update(id: String, version: UInt64, spec: SwarmNodeSpec) async throws {
             try await client.run(UpdateNodeEndpoint(id: id, version: version, spec: spec))
         }
         
