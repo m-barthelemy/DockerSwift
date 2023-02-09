@@ -11,7 +11,7 @@ public struct InspectSwarmEndpoint: Endpoint {
     }
     
     public struct SwarmResponseVersion: Codable {
-        let Index: UInt64
+        public let Index: UInt64
     }
     
     public struct SwarmJoinTokens: Codable {
@@ -31,30 +31,30 @@ public struct InspectSwarmEndpoint: Endpoint {
     }
     
     public struct SwarmResponse: Codable {
-        let id: String
+        public let id: String
         
-        let createdAt: String
-        let updatedAt: String
+        public let createdAt: String
+        public let updatedAt: String
         
         /// DataPathPort specifies the data path port number for data traffic. Acceptable port range is 1024 to 49151.
         /// If no port is set or is set to 0, the default port (4789) is used.
-        let dataPathPort: UInt16
+        public let dataPathPort: UInt16
         
-        let defaultAddrPool: [String]
+        public let defaultAddrPool: [String]
         
-        let joinTokens: SwarmJoinTokens
+        public let joinTokens: SwarmJoinTokens
         
         /// Whether there is currently a root CA rotation in progress for the swarm
-        let rootRotationInProgress: Bool
+        public let rootRotationInProgress: Bool
         
-        let spec: SwarmSpec
+        public let spec: SwarmSpec
         
         /// SubnetSize specifies the subnet size of the networks created from the default subnet pool.
-        let subnetSize: UInt8
+        public let subnetSize: UInt8
         
-        let tlsInfo: SwarmTLSInfo
+        public let tlsInfo: SwarmTLSInfo
         
-        let version: SwarmResponseVersion
+        public let version: SwarmResponseVersion
         
         enum CodingKeys: String, CodingKey {
             case id = "ID"
