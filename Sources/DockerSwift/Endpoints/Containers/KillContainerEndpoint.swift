@@ -1,20 +1,20 @@
 import NIOHTTP1
 
-struct StopContainerEndpoint: Endpoint {
+struct KillContainerEndpoint: Endpoint {
     typealias Body = NoBody
     
     typealias Response = NoBody?
     var method: HTTPMethod = .POST
     
     private let containerId: String
-    private let timeout: UInt?
+    private let signal: UnixSignal
     
-    init(containerId: String, timeout: UInt?) {
+    init(containerId: String, signal: UnixSignal) {
         self.containerId = containerId
-        self.timeout = timeout
+        self.signal = signal
     }
     
     var path: String {
-        "containers/\(containerId)/stop\(timeout != nil ? "?t=\(timeout!)" : "")"
+        "containers/\(containerId)/kill?signal=\(signal.rawValue)"
     }
 }

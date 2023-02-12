@@ -321,7 +321,7 @@ public struct ServiceSpec: Codable {
     
     // MARK: - ContainerSpec
     public struct ContainerSpec: Codable {
-        public init(image: String, isolation: String = "default", labels: [String : String]? = [:], command: [String]? = [], args: [String]? = [], hostname: String? = nil, env: [String]? = [], workDir: String? = nil, user: String? = nil, groups: [String]? = nil, privileges: ServiceSpec.ContainerSpec.Privileges? = nil, tty: Bool? = false, openStdin: Bool? = false, readOnly: Bool? = false, mounts: [ContainerHostConfig.ContainerMount]? = nil, stopSignal: ContainerConfig.StopSignal? = .quit, stopGracePeriod: UInt64? = 0, healthCheck: ContainerConfig.HealthCheckConfig? = nil, dnsConfig: ServiceSpec.ContainerSpec.DNSConfig? = .init(), secrets: [ServiceSpec.ContainerSpec.Secret]? = [], configs: [ServiceSpec.ContainerSpec.Config]? = [], init: Bool? = nil, sysctls: [String : String]? = [:], capabilityAdd: [String]? = [], capabilityDrop: [String]? = [], ulimits: [ContainerHostConfig.Ulimit]? = []) {
+        public init(image: String, isolation: String = "default", labels: [String : String]? = [:], command: [String]? = [], args: [String]? = [], hostname: String? = nil, env: [String]? = [], workDir: String? = nil, user: String? = nil, groups: [String]? = nil, privileges: ServiceSpec.ContainerSpec.Privileges? = nil, tty: Bool? = false, openStdin: Bool? = false, readOnly: Bool? = false, mounts: [ContainerHostConfig.ContainerMount]? = nil, stopSignal: UnixSignal? = .quit, stopGracePeriod: UInt64? = 0, healthCheck: ContainerConfig.HealthCheckConfig? = nil, dnsConfig: ServiceSpec.ContainerSpec.DNSConfig? = .init(), secrets: [ServiceSpec.ContainerSpec.Secret]? = [], configs: [ServiceSpec.ContainerSpec.Config]? = [], init: Bool? = nil, sysctls: [String : String]? = [:], capabilityAdd: [String]? = [], capabilityDrop: [String]? = [], ulimits: [ContainerHostConfig.Ulimit]? = []) {
             self.image = image
             self.isolation = isolation
             self.labels = labels
@@ -395,7 +395,7 @@ public struct ServiceSpec: Codable {
         public var mounts: [ContainerHostConfig.ContainerMount]? = nil
         
         /// Signal to be sent to the container for stopping it.
-        public var stopSignal: ContainerConfig.StopSignal? = .quit
+        public var stopSignal: UnixSignal? = .quit
         
         public var stopGracePeriod: UInt64? = 0
         

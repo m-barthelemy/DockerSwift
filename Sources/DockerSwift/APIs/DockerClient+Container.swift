@@ -68,10 +68,21 @@ extension DockerClient {
         }
         
         /// Stops a container. Before stopping it needs to be created and started.
-        /// - Parameter nameOrId: Name or Id of the`Container`.
+        /// - Parameters:
+        ///   - nameOrId: Name or Id of the`Container`.
+        ///   - timeout: Number of seconds to wait for the containert to stop, before killing it.
         /// - Throws: Errors that can occur when executing the request.
-        public func stop(_ nameOrId: String) async throws {
-            try await client.run(StopContainerEndpoint(containerId: nameOrId))
+        public func stop(_ nameOrId: String, timeout: UInt? = nil) async throws {
+            try await client.run(StopContainerEndpoint(containerId: nameOrId, timeout: timeout))
+        }
+        
+        /// Kills a running container by sending it a Unix signal.
+        /// - Parameters:
+        ///   - nameOrId: Name or Id of the`Container`.
+        ///   - signal: Unix signal to be sent, defaults to `kill` (SIGKILL).
+        /// - Throws: Errors that can occur when executing the request.
+        public func kill(_ nameOrId: String, with signal: UnixSignal = .kill) async throws {
+            try await client.run(KillContainerEndpoint(containerId: nameOrId, signal: signal))
         }
         
         /// Pauses a container.

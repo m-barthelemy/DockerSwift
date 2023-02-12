@@ -32,6 +32,7 @@ This means that it will work with Docker >= 20.10.
 |                             | Create                  | ✅       |             |
 |                             | Update                  | ✅       |             |
 |                             | Rename                  | ✅       |             |
+|                             | Start/Stop/Kill         | ✅       |             |
 |                             | Pause/Unpause           | ✅       |             |
 |                             | Get logs                | ✅       |             |
 |                             | Get stats               | ✅       |             |
@@ -42,6 +43,7 @@ This means that it will work with Docker >= 20.10.
 |                             | Filesystem changes      | ✅       | untested    |
 |                             | Attach                  | ✅       | basic support <sup>1</sup>|
 |                             | Exec                    | ❌       | unlikely <sup>2</sup>|
+|                             | Resize TTY              | ❌       |             |
 |                             |                         |          |             |
 | Images                      | List                    | ✅       |             |
 |                             | Inspect                 | ✅       |             |
@@ -127,7 +129,7 @@ This means that it will work with Docker >= 20.10.
 
 Note: various Docker endpoints such as list or prune support *filters*. These are currently not implemented.
 
-<sup>1</sup> Attach is currently **not** supported when connecting to Docker via local Unix socket, or when using a proxy.
+<sup>1</sup> Attach is currently **not** supported when connecting to Docker via local Unix socket, or when using a proxy. It uses the Websocket protocol.
 
 <sup>2</sup> Docker exec is using an unconventional protocol that requires raw access to the TCP socket. Significant work needed in order to support it.
 

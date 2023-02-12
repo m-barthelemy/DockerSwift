@@ -53,7 +53,7 @@ public struct ContainerConfig: Codable {
     public var stdinOnce: Bool = false
     
     /// Unix signal to stop a container as a string or unsigned integer.
-    public var stopSignal: StopSignal? = nil
+    public var stopSignal: UnixSignal? = nil
     
     /// Timeout to stop a container, in seconds.
     /// After that, the container will be forcibly killed.
@@ -71,7 +71,7 @@ public struct ContainerConfig: Codable {
     /// The working directory for commands to run in.
     public var workingDir: String = ""
     
-    public init(image: String, attachStdin: Bool = false, attachStdout: Bool = true, attachStderr: Bool = true, command: [String]? = nil, domainname: String = "", entrypoint: [String]? = nil, environmentVars: [String]? = nil, exposedPorts: [ExposedPortSpec]? = [], healthcheck: ContainerConfig.HealthCheckConfig? = nil, hostname: String = "", labels: [String : String]? = [:], macAddress: String? = nil, networkDisabled: Bool? = nil, onBuild: [String]? = nil, openStdin: Bool = false, shell: [String]? = nil, stdinOnce: Bool = false, stopSignal: ContainerConfig.StopSignal? = nil, stopTimeout: UInt? = 10, tty: Bool = false, user: String = "", volumes: [String : ContainerConfig.EmptyObject]? = [:], workingDir: String = "") {
+    public init(image: String, attachStdin: Bool = false, attachStdout: Bool = true, attachStderr: Bool = true, command: [String]? = nil, domainname: String = "", entrypoint: [String]? = nil, environmentVars: [String]? = nil, exposedPorts: [ExposedPortSpec]? = [], healthcheck: ContainerConfig.HealthCheckConfig? = nil, hostname: String = "", labels: [String : String]? = [:], macAddress: String? = nil, networkDisabled: Bool? = nil, onBuild: [String]? = nil, openStdin: Bool = false, shell: [String]? = nil, stdinOnce: Bool = false, stopSignal: UnixSignal? = nil, stopTimeout: UInt? = 10, tty: Bool = false, user: String = "", volumes: [String : ContainerConfig.EmptyObject]? = [:], workingDir: String = "") {
         self.attachStdin = attachStdin
         self.attachStdout = attachStdout
         self.attachStderr = attachStderr
@@ -123,26 +123,6 @@ public struct ContainerConfig: Codable {
         case user = "User"
         case volumes = "Volumes"
         case workingDir = "WorkingDir"
-    }
-    
-    public enum StopSignal: String, Codable {
-        case hup = "SIGHUP"
-        case int = "SIGINT"
-        case quit = "SIGQUIT"
-        /// Illegal Instruction
-        case ill = "SIGILL"
-        case trap = "SIGTRAP"
-        case abrt = "SIGABRT"
-        case bus = "SIGBUS"
-        case fpe = "SIGFPE"
-        /// Kill signal. Immediately terminates the container without being forwarded to it.
-        case kill = "SIGKILL"
-        case usr1 = "SIGUSR1"
-        case segv = "SIGSEGV"
-        case usr2 = "SIGUSR2"
-        case pipe = "SIGPIPE"
-        case alrm = "SIGALRM"
-        case term = "SIGTERM"
     }
     
     public struct HealthCheckConfig: Codable {
