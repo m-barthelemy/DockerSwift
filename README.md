@@ -281,7 +281,7 @@ defer {try! docker.syncShutdown()}
           // Expose port 80
           exposedPorts: [.tcp(80)],
           image: "nginx:latest",
-          // Set custon container labels
+          // Set custom container labels
           labels: ["label1": "value1", "label2": "value2"]
       ),
       hostConfig: .init(
@@ -469,7 +469,7 @@ defer {try! docker.syncShutdown()}
   let tar = FileManager.default.contents(atPath: "/tmp/docker-build.tar")
   let buffer = ByteBuffer.init(data: tar)
   let buildOutput = try await docker.images.build(
-      config: .init(repoTags: ["build:test"]),
+      config: .init(dockerfile: "./Dockerfile", repoTags: ["build:test"]),
       context: buffer
   )
   // The built Image ID is returned towards the end of the build output
