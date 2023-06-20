@@ -131,7 +131,7 @@ Note: various Docker endpoints such as list or prune support *filters*. These ar
 
 <sup>1</sup> Attach is currently **not** supported when connecting to Docker via local Unix socket, or when using a proxy. It uses the Websocket protocol.
 
-<sup>2</sup> Docker exec is using an unconventional protocol that requires raw access to the TCP socket. Significant work needed in order to support it.
+<sup>2</sup> Docker exec is using an unconventional protocol that requires raw access to the TCP socket. Significant work needed in order to support it (https://github.com/swift-server/async-http-client/issues/353).
 
 
 ## Installation
