@@ -23,7 +23,7 @@ public struct ServiceEndpointSpec: Codable {
     }
     
     public struct EndpointPortConfig: Codable {
-        public var name: String
+        public var name: String?
         
         public var `protocol`: ExposedPortSpec.PortProtocol = .tcp
         

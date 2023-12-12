@@ -534,7 +534,7 @@ public struct ContainerHostConfig: Codable {
                 self.driverConfig = driverConfig
             }
             
-            public var noCopy: Bool = false
+            public var noCopy: Bool? = false
             public var labels: [String:String] = [:]
             public var driverConfig: DriverConfig?
             

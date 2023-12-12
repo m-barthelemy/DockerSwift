@@ -1,15 +1,15 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.9
 import PackageDescription
 
 let package = Package(
     name: "DockerSwift",
-    platforms: [.macOS(.v12)],
+    platforms: [.macOS(.v14)],
     products: [
         .library(name: "DockerSwift", targets: ["DockerSwift"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-nio.git", from: "2.18.0"),
-        .package(url: "https://github.com/swift-server/async-http-client.git", from: "1.10.0"),
+        .package(url: "https://github.com/apple/swift-nio.git", from: "2.62.0"),
+        .package(url: "https://github.com/swift-server/async-http-client.git", from: "1.19.0"),
         // Container attach endpoint
         .package(url: "https://github.com/vapor/websocket-kit.git", from: "2.6.1"),
         // Only used for parsing the multiple and inconsistent date formats returned by Docker

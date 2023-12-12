@@ -61,7 +61,7 @@ public struct ServiceSpec: Codable {
         }
         
         
-        /// Onyl used when the Runtime field is set to attachment.
+        /// Only used when the Runtime field is set to attachment.
         // public var NetworkAttachmentSpec
         /// Only used when the Runtime field is set to plugin.
         // public var PluginSpec
@@ -208,7 +208,7 @@ public struct ServiceSpec: Codable {
         
         public struct Replicated: Codable {
             /// The maximum number of replicas to run simultaneously.
-            public var replicas: UInt32
+            public var replicas: UInt32?
             
             enum CodingKeys: String, CodingKey {
                 case replicas = "Replicas"
@@ -270,7 +270,7 @@ public struct ServiceSpec: Codable {
         private init(){}
     }
     
-    // MARK: - UpdateOrRollbaclConfig
+    // MARK: - UpdateOrRollbackConfig
     public struct UpdateOrRollbackConfig: Codable {
         public init(parallelism: UInt64, delay: UInt64? = nil, failureAction: ServiceSpec.UpdateOrRollbackConfig.FailureAction, monitor: UInt64, maxFailureRatio: Float = 0, order: ServiceSpec.UpdateRollBackOrder) {
             self.parallelism = parallelism
@@ -355,7 +355,7 @@ public struct ServiceSpec: Codable {
         
         /// Windows only. Isolation technology of the containers running the service.
         /// Valid values: "default" "process" "hyperv"
-        public var isolation: String = "default"
+        public var isolation: String? = "default"
         
         public var labels: [String:String]? = [:]
         

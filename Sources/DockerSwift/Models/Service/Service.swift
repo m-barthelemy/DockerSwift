@@ -1,12 +1,16 @@
 import Foundation
+import BetterCodable
 
 /// Representation of a service.
 /// Some actions can be performed on an instance.
 public struct Service {
-    
     public let id: String
-    public let createdAt: Date?
-    public let updatedAt: Date?
+    
+    @DateValue<WeirdDockerStrategy>
+    private(set) public var createdAt: Date
+    
+    @DateValue<WeirdDockerStrategy>
+    private(set) public var updatedAt: Date
     
     /// The version number of the service. This is needed to avoid conflicting writes.
     /// The client must send the version number along with the modified specification when updating a service.
