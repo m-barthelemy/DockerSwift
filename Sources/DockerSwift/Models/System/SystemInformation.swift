@@ -41,11 +41,11 @@ public struct SystemInformation: Codable {
     
     /// Indicates if the host has kernel memory limit support enabled.
     @available(*, deprecated, message: "This field is deprecated as the kernel 5.4 deprecated `kmem.limit_in_bytes`")
-    public let kernelMemory: Bool
+    public let kernelMemory: Bool?
     
     /// Indicates if the host has kernel memory TCP limit support enabled.
     /// Kernel memory TCP limits are not supported when using cgroups v2, which does not support the corresponding memory.kmem.tcp.limit_in_bytes cgroup.
-    public let kernelMemoryTCP: Bool
+    public let kernelMemoryTCP: Bool?
     
     /// Indicates if CPU CFS (Completely Fair Scheduler) period is supported by the host.
     public let cpuCfsPeriod: Bool
@@ -322,9 +322,11 @@ public struct Plugins: Codable {
 
 // MARK: - RegistryConfig
 public struct RegistryConfig: Codable {
-    public let allowNondistributableArtifactsCIDRs, allowNondistributableArtifactsHostnames, insecureRegistryCIDRs: [String]
+    public let allowNondistributableArtifactsCIDRs: [String]?
+    public let allowNondistributableArtifactsHostnames: [String]?
+    public let insecureRegistryCIDRs: [String]
     public let indexConfigs: [String: IndexConfig]
-    public let mirrors: [String]
+    public let mirrors: [String]?
     
     enum CodingKeys: String, CodingKey {
         case allowNondistributableArtifactsCIDRs = "AllowNondistributableArtifactsCIDRs"
