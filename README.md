@@ -174,7 +174,7 @@ Remote daemon over HTTP:
 ```swift
 import DockerSwift
 
-let docker = DockerClient(daemonURL: .init(string: "http://127.0.0.1:2375")!)
+let docker = DockerClient(daemonURL: URL(string: "http://127.0.0.1:2375")!)
 defer {try! docker.syncShutdown()}
 ```
 
@@ -402,7 +402,7 @@ defer {try! docker.syncShutdown()}
   
   // We need to be sure that the container is really running before being able to send commands to it.
   try await docker.containers.start(container.id)
-  try await Task.sleep(nanoseconds: 1_000_000_000)
+  try await Task.sleep(for: .seconds(1))
   
   // Now let's send the command; the response will be printed to the screen.
   try await attach.send("uname")
@@ -724,7 +724,7 @@ defer {try! docker.syncShutdown()}
   ```swift
   var index = 0 // Keep track of how long we've been waiting
   repeat {
-      try await Task.sleep(nanoseconds: 1_000_000_000)
+      try await Task.sleep(for: .seconds(1))
       print("\n Service still not fully running!")
       index += 1
   } while try await docker.tasks.list()
