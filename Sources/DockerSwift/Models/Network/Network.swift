@@ -40,8 +40,8 @@ public struct Network: Codable {
     public let ingress: Bool
     
     public let ipam: IPAM
-    
-    /// Enable IPv6 on the network.
+
+    /// Whether the network was created with IPv6 enabled.
     public let enableIPv6: Bool
     
     public let containers: [String:NetworkContainer]?

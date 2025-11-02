@@ -585,13 +585,13 @@ public struct ContainerHostConfig: Codable {
         }
         
         public func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: Self.CodingKeys)
+            var container = encoder.container(keyedBy: Self.CodingKeys.self)
             try container.encode("\(self.hostPort)", forKey: .hostPort)
             try container.encode(self.hostIp, forKey: .hostIp)
         }
         
         public init(from decoder: Swift.Decoder) throws {
-            let container = try decoder.container(keyedBy: Self.CodingKeys)
+            let container = try decoder.container(keyedBy: Self.CodingKeys.self)
             self.hostIp = try container.decode(String.self, forKey: .hostIp)
             let portString = try? container.decode(String.self, forKey: .hostPort)
             guard let port = UInt16(portString ?? "") else {

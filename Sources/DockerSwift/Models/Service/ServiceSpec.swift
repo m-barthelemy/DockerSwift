@@ -45,12 +45,13 @@ public struct ServiceSpec: Codable {
     /// Note: `containerSpec`, `networkAttachmentSpec`, and `pluginSpec` are mutually exclusive.
     /// `pluginSpec` is only used when the `runtime` field is set to `plugin`. `networkAttachmentSpec` is used when the `runtime` field is set to `attachment`.
     public struct TaskTemplate: Codable {
-        public init(containerSpec: ServiceSpec.ContainerSpec, forceUpdate: UInt? = nil, runtime: ServiceSpec.TaskTemplate.Runtime? = .container, resources: ServiceSpec.TaskTemplate.Resources? = nil, restartPolicy: ServiceRestartPolicy? = nil, networks: [ServiceSpec.NetworkAttachmentConfig]? = nil, logDriver: DriverConfig? = nil) {
+        public init(containerSpec: ServiceSpec.ContainerSpec, forceUpdate: UInt? = nil, runtime: ServiceSpec.TaskTemplate.Runtime? = .container, resources: ServiceSpec.TaskTemplate.Resources? = nil, restartPolicy: ServiceRestartPolicy? = nil, placement: ServicePlacement? = nil, networks: [ServiceSpec.NetworkAttachmentConfig]? = nil, logDriver: DriverConfig? = nil) {
             self.containerSpec = containerSpec
             self.forceUpdate = forceUpdate
             self.runtime = runtime
             self.resources = resources
             self.restartPolicy = restartPolicy
+            self.placement = placement
             self.networks = networks
             self.logDriver = logDriver
         }
@@ -75,9 +76,8 @@ public struct ServiceSpec: Codable {
         /// Specification for the restart policy which applies to containers created as part of this service.
         public var restartPolicy: ServiceRestartPolicy?
         
-        // TODO: implement
-        //public var placement: Placement
-        
+        public var placement: ServicePlacement?
+
         /// Specifies which networks the service should attach to.
         public var networks: [NetworkAttachmentConfig]?
         
@@ -153,6 +153,18 @@ public struct ServiceSpec: Codable {
                     case memoryBytes = "MemoryBytes"
                     case genericResources = "GenericResources"
                 }
+            }
+        }
+
+        public struct ServicePlacement: Codable {
+            public init(constraints: [String]) {
+                self.constraints = constraints
+            }
+            
+            public var constraints: [String]
+
+            public enum CodingKeys: String, CodingKey {
+                case constraints = "Constraints"
             }
         }
     }
@@ -634,4 +646,5 @@ public struct ServiceSpec: Codable {
             }
         }
     }
+
 }

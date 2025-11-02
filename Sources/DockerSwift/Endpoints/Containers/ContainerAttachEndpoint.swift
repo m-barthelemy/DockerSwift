@@ -4,7 +4,7 @@ import WebSocketKit
 import Foundation
 
 /// Attach to a container via Websocket
-final class ContainerAttachEndpoint {
+final class ContainerAttachEndpoint: @unchecked Sendable {
     typealias Body = NoBody
     typealias Response = ContainerAttach
     
